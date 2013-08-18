@@ -14,7 +14,6 @@
 		context.arc( this.x, this.y, this.radius, 0, Math.PI*2);
 		context.fillStyle = color;
 		context.fill();
-		console.log(color)
 	};
 
 	Circle.prototype.update = function() {
@@ -41,7 +40,7 @@
 	};
 
 	if (typeof module !== 'undefined')
-   	module.exports = Circle;
+   	global.Circle = Circle;
   else
     window.Circle = Circle;
 

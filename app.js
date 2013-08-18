@@ -8,7 +8,11 @@ var express = require('express')
   , user = require('./routes/user')
   , http = require('http')
   , path = require('path');
-
+  
+  require('./public/javascripts/Physics');
+  require('./public/javascripts/Point');
+  require('./public/javascripts/Circle');
+  require('./public/javascripts/server/game_physics_loop');
 
 var app = express();
 var server = http.createServer(app);
@@ -32,23 +36,22 @@ if ('development' == app.get('env')) {
 
 app.get('/', routes.index);
 app.get('/users', user.list);
-circle_array = []; 
+
+var game = new Game();
+game.initialize(null);
 
 io.sockets.on('connection', function (socket) {
-	//debugger
-	if( circle_array.length == 0 ){
-		for (var i = 1 ; i <= 5; i++) {
- 			circle_array[i] = [getRandomInt(100,800), getRandomInt(100, 500), getRandomInt(10, 50)];
- 		};
- 	}
-  socket.emit('start', circle_array);
+	
+  socket.emit('start', game.state);
+  
+  game.serverPlay = true;
+  
+  game.on('checkSync', function(data){
+    socket.emit('checkSync', data);
+  });
   
 });
 
 server.listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
-
-function getRandomInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-};

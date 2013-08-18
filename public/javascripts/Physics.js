@@ -79,7 +79,7 @@
 	};
 
 	if (typeof module !== 'undefined')
-   	module.exports = Physics;
+   	global.Physics = Physics;
   else
     window.Physics = Physics;
 

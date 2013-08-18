@@ -5,7 +5,7 @@
 	};
 
 	if (typeof module !== 'undefined')
-   	module.exports = Point;
+   	global.Point = Point;
   else
     window.Point = Point;
 
