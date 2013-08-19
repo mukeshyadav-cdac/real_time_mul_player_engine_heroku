@@ -9,6 +9,7 @@
 		this.clientPlay = false;
 		this.serverPlay = false;
 		this.circularArray = [];
+		this.clientCount = 0;
 	};
 
 	if (typeof module !== 'undefined') {
@@ -47,6 +48,15 @@
 
 	Game.prototype.clientRender = function() {		
 		if( this.clientPlay  == true ) {
+			
+			if ((this.clientCount % 60)  == 40) {
+        if( syncData) {
+        	updateCor(syncData);
+        }
+				syncData = undefined;
+      }
+      
+      this.clientCount = this.clientCount + 1;
 			con.clearRect( 0, 0, 900, 600 );
 
 			for (var i = 1; i <= 5; i++) {
@@ -68,16 +78,16 @@
 	Game.prototype.serverRender = function() {
 		if( this.serverPlay) {
 
-			if ( count == 15 ) {
+			if ( count == 59 ) {
 				//var clonned  = JSON.parse( JSON.stringify( this.circularArray ));
 				this.emit('checkSync', { 'circularArray': this.circularArray, 'clientPlay': true  } );
 				count = 0; 
 			} 
 			
-			if ( count < 4 ) {
-				this.circularArray[count] = [];
+			if ( count == 40 ) {
+				this.circularArray[0] = [];
 				for (var i = 1 ; i <= 5; i++) {
-	 				this.circularArray[count][i] = {
+	 				this.circularArray[0][i] = {
 	 																				'centre': [ this.circle[i].x, this.circle[i].y ],
 	 																				'radius': this.circle[i].radius,
 	 																				'velocity': [ this.circle[i].velocity.x, this.circle[i].velocity.y ]
