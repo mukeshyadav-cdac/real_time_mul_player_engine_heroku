@@ -16,6 +16,15 @@ function start() {
 	socket.on('checkSync', function (data) {
 		game.clientPlay = data.clientPlay;
 		syncData = data;
+    if (game.first) {
+     for (var i = 1 ; i <= game.circle.length - 1; i++) {
+        game.circle[i].x = data.circularArray[1][i]['centre'][0];
+        game.circle[i].y = data.circularArray[1][i]['centre'][1];
+        game.circle[i].velocity.x = data.circularArray[1][i].velocity[0];
+        game.circle[i].velocity.y = data.circularArray[1][i].velocity[1];
+      }
+      game.first = false;
+    }
 	});
 }
 

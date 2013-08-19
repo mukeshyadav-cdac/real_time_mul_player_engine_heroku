@@ -45,6 +45,8 @@ io.sockets.on('connection', function (socket) {
   socket.emit('start', game.state);
   
   game.serverPlay = true;
+  game.first = true;
+  game.serverCount = 0;
   
   game.on('checkSync', function(data){
     socket.emit('checkSync', data);

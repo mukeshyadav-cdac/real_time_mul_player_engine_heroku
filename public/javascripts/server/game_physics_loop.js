@@ -10,10 +10,11 @@
 		this.serverPlay = false;
 		this.circularArray = [];
 		this.clientCount = 0;
+    this.serverCount = 0;
+		this.first = true;
 	};
 
 	if (typeof module !== 'undefined') {
-		var count = 0;
 		var EventEmitter = require('events').EventEmitter;
 		Game.prototype.__proto__ = EventEmitter.prototype;
 	}
@@ -49,7 +50,7 @@
 	Game.prototype.clientRender = function() {		
 		if( this.clientPlay  == true ) {
 			
-			if ((this.clientCount % 10)  == 4) {
+			if ((this.clientCount % 60)  == 40) {
         if( syncData) {
         	updateCor(syncData);
         }
@@ -78,13 +79,13 @@
 	Game.prototype.serverRender = function() {
 		if( this.serverPlay) {
 
-			if ( count == 10 ) {
+			if ( this.serverCount == 60 ) {
 				//var clonned  = JSON.parse( JSON.stringify( this.circularArray ));
 				this.emit('checkSync', { 'circularArray': this.circularArray, 'clientPlay': true  } );
-				count = 0; 
+				this.serverCount = 0; 
 			} 
 			
-			if ( count == 4 ) {
+			if ( this.serverCount == 40 ) {
 				this.circularArray[0] = [];
 				for (var i = 1 ; i <= 5; i++) {
 	 				this.circularArray[0][i] = {
@@ -95,8 +96,23 @@
 			 	}
 
 			}
+
 			
-			count = count + 1;
+			if ( this.first && ( this.serverCount ==  0 ) ) {
+				this.circularArray[1] = [];
+				for (var i = 1 ; i <= 5; i++) {
+	 				this.circularArray[1][i] = {
+	 																				'centre': [ this.circle[i].x, this.circle[i].y ],
+	 																				'radius': this.circle[i].radius,
+	 																				'velocity': [ this.circle[i].velocity.x, this.circle[i].velocity.y ]
+	 																			};
+			 	}
+			 	this.first = false;
+			}
+
+
+			
+			this.serverCount = this.serverCount + 1;
 
 			for (var i = 1; i <= 5; i++) {
 				var  circleFirst = this.circle[i];
