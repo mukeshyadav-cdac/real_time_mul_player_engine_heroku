@@ -49,7 +49,7 @@
 	Game.prototype.clientRender = function() {		
 		if( this.clientPlay  == true ) {
 			
-			if ((this.clientCount % 60)  == 40) {
+			if ((this.clientCount % 10)  == 4) {
         if( syncData) {
         	updateCor(syncData);
         }
@@ -78,13 +78,13 @@
 	Game.prototype.serverRender = function() {
 		if( this.serverPlay) {
 
-			if ( count == 59 ) {
+			if ( count == 10 ) {
 				//var clonned  = JSON.parse( JSON.stringify( this.circularArray ));
 				this.emit('checkSync', { 'circularArray': this.circularArray, 'clientPlay': true  } );
 				count = 0; 
 			} 
 			
-			if ( count == 40 ) {
+			if ( count == 4 ) {
 				this.circularArray[0] = [];
 				for (var i = 1 ; i <= 5; i++) {
 	 				this.circularArray[0][i] = {
